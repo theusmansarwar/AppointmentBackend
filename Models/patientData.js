@@ -8,10 +8,12 @@ const PatientDataSchema = new mongoose.Schema({
   
   address: { type: String, required: true },
  
-  date: { type: Date, required: true },
-  time: { type: String, required: true },
+   appointmentDate: { type: Date, required: true },
+  appointmentTime: { type: String, required: true },
   reason: { type: String, required: true },
  
 }, { timestamps: true });
 
-module.exports = mongoose.model("PatientData", PatientDataSchema);
+// module.exports = mongoose.model("PatientData", PatientDataSchema);
+module.exports =
+  mongoose.models.PatientData || mongoose.model("PatientData", PatientDataSchema);

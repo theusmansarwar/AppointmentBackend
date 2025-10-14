@@ -107,29 +107,7 @@ const updateAppointment = async (req, res) => {
   }
 };
 
-// 🗑️ Delete Appointment
-// const deleteAppointment = async (req, res) => {
-//   const { id } = req.params;
 
-//   if (!id) {
-//     return res.json({ error: "Appointment ID is required" });
-//   }
-
-//   try {
-//     const deletedAppointment = await Appointment.findByIdAndDelete(id);
-
-//     if (!deletedAppointment) {
-//       return res.json({ error: "Appointment not found" });
-//     }
-
-//     return res.json({
-//       message: "Appointment deleted successfully",
-//       data: deletedAppointment,
-//     });
-//   } catch (err) {
-//     return res.json({ error: err.message });
-//   }
-// };
 const deleteAppointment = async (req, res) => {
   try {
     const { ids } = req.body;
@@ -172,26 +150,84 @@ const getAllAppointments = async (req, res) => {
 };
 
 // 🔍 Get a single Appointment by ID
+// const getAppointmentById = async (req, res) => {
+//   const { id } = req.params;
+
+//   if (!id) {
+//     return res.json({ error: "Appointment ID is required" });
+//   }
+
+//   try {
+//     const appointment = await Appointment.findById(id).populate("patientId");
+
+//     if (!appointment) {
+//       return res.json({ error: "Appointment not found" });
+//     }
+
+//     return res.json({
+//       message: "Appointment fetched successfully",
+//       data: appointment,
+//     });
+//   } catch (err) {
+//     return res.json({ error: err.message });
+//   }
+// };
+// ✅ View Industries with pagination
+// const getAppointmentById = async (req, res) => {
+//   try {
+//     const page = parseInt(req.query.page) || 1;
+//     const limit = parseInt(req.query.limit) || 10;
+
+//     const totalAppointment = await Appointment.countDocuments();
+//     const appointment = await Appointment.find()
+//       .sort({ createdAt: -1 })
+//       .limit(limit)
+//       .skip((page - 1) * limit);
+
+//     res.status(200).json({
+//       totalAppointment,
+//       totalPages: Math.ceil(totalAppointment / limit),
+//       currentPage: page,
+//       limit,
+//       appointment,
+//     });
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
 const getAppointmentById = async (req, res) => {
-  const { id } = req.params;
-
-  if (!id) {
-    return res.json({ error: "Appointment ID is required" });
-  }
-
   try {
-    const appointment = await Appointment.findById(id).populate("patientId");
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const search = req.query.search || "";
 
-    if (!appointment) {
-      return res.json({ error: "Appointment not found" });
-    }
+    // ✅ Build filter (adjust fields based on your schema)
+    const filter = search
+      ? {
+          $or: [
+            { patientName: { $regex: search, $options: "i" } }, // search by patient name
+             // search by doctor (if exists)
+            { reason: { $regex: search, $options: "i" } },      // search by reason
+          ],
+        }
+      : {};
 
-    return res.json({
-      message: "Appointment fetched successfully",
-      data: appointment,
+    const totalAppointment = await Appointment.countDocuments(filter);
+
+    const appointment = await Appointment.find(filter)
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .skip((page - 1) * limit);
+
+    res.status(200).json({
+      totalAppointment,
+      totalPages: Math.ceil(totalAppointment / limit),
+      currentPage: page,
+      limit,
+      appointment,
     });
-  } catch (err) {
-    return res.json({ error: err.message });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
 

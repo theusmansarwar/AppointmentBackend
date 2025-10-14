@@ -21,9 +21,9 @@ router.put("/update/:id", updateDailyReport);
 router.delete("/delete", deleteDailyReport);
 
 // 📄 Get All Daily Reports
-router.get("/all", getAllDailyReports);
+router.get("/", getAllDailyReports);
 
 // 🔍 Get Single Daily Report by ID
-router.get("/:id", getDailyReportById);
+router.get("/view", getDailyReportById);
 
 module.exports = router;

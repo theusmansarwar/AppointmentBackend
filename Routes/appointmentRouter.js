@@ -11,7 +11,7 @@ const {
 router.post("/create", createAppointment);
 router.put("/update/:id", updateAppointment);
 router.delete("/delete", deleteAppointment);
-router.get("/all", getAllAppointments);
-router.get("/get/:id", getAppointmentById);
+router.get("/", getAllAppointments);
+router.get("/view", getAppointmentById);
 
 module.exports = router;

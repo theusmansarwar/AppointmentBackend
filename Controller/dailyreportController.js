@@ -13,16 +13,6 @@ const createDailyReport = async (req, res) => {
     commonDiseases,
   } = req.body;
 
-  // basic validation
-  // if (!reportDate) {
-  //   return res.json({ error: "Date is required" });
-  // }
-  // if (totalAppointments === undefined) {
-  //   return res.json({ error: "Total Appointments is required" });
-  // }
-  // if (patientsSeen === undefined) {
-  //   return res.json({ error: "Patients Seen is required" });
-  // }
   
     const missingFields = [];
 
@@ -111,33 +101,6 @@ const updateDailyReport = async (req, res) => {
   }
 };
 
-// 🗑️ Delete DailyReport record
-// const deleteDailyReport = async (req, res) => {
-//   const { id } = req.params; // ID from URL
-
-//   if (!id) {
-//     return res.json({ error: "DailyReport ID is required" });
-//   }
-
-//   try {
-//     const deletedReport = await DailyReport.findByIdAndDelete(id);
-
-//     if (!deletedReport) {
-//       return res.json({ error: "DailyReport not found" });
-//     }
-
-//     return res.json({
-//       message: "DailyReport record deleted successfully",
-//       data: deletedReport,
-//     });
-//   } catch (err) {
-//     return res.json({ error: err.message });
-//   }
-// };
-//  catch (err) {
-//     return res.json({ error: err.message });
-//   }
-// };
 const deleteDailyReport = async (req, res) => {
   try {
     const { ids } = req.body;
@@ -163,7 +126,7 @@ const deleteDailyReport = async (req, res) => {
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
-// 📄 Get all DailyReports
+//📄 Get all DailyReports
 const getAllDailyReports = async (req, res) => {
   try {
     const reports = await DailyReport.find().sort({ date: -1 }); // latest first
@@ -176,30 +139,42 @@ const getAllDailyReports = async (req, res) => {
   }
 };
 
-// 🔍 Get a single DailyReport record by ID
+
 const getDailyReportById = async (req, res) => {
-  const { id } = req.params;
-
-  if (!id) {
-    return res.json({ error: "DailyReport ID is required" });
-  }
-
   try {
-    const report = await Report.findById(id);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const search = req.query.search || "";
 
-    if (!report) {
-      return res.json({ error: "DailyReport not found" });
-    }
+    // ✅ Build filter (customize fields you want to allow searching on)
+    const filter = search
+      ? {
+          $or: [
+            { reportDate: { $regex: search, $options: "i" } }, // if you have a title
+            { prescriptionGiven: { $regex: search, $options: "i" } }, // if you store notes
+                   // if date is string
+          ],
+        }
+      : {};
 
-    return res.json({
-      message: "DailyReport record fetched successfully",
-      data: report,
+    const totalReport = await DailyReport.countDocuments(filter);
+
+    const report = await DailyReport.find(filter)
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .skip((page - 1) * limit);
+
+    res.status(200).json({
+      totalReport,
+      totalPages: Math.ceil(totalReport / limit),
+      currentPage: page,
+      limit,
+      report,
     });
-  } catch (err) {
-    return res.json({ error: err.message });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
-
 module.exports = {
   createDailyReport,
   updateDailyReport,

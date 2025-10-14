@@ -10,7 +10,7 @@ const { createPatientData
 router.post("/create", createPatientData);
 router.put("/update/:id", updatePatientData);
 router.delete("/delete", deletePatientData);
-router.get("/all", getAllPatients);
-router.get("/get/_id", getPatientById);
+router.get("/", getAllPatients);
+router.get("/view", getPatientById);
 
 module.exports = router;
