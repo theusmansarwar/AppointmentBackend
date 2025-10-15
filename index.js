@@ -12,6 +12,7 @@ const appointmentRouter = require("./Routes/appointmentRouter");
 const recordvisitRoutes = require("./Routes/recordvisitRoutes");
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
@@ -142,7 +143,7 @@ app.get("/report/view", async (req, res) => {
 });
 
 // Start server
-const port = 5000;
+const port = 5007;
 
 const getLocalIP = () => {
   const nets = os.networkInterfaces();
@@ -157,13 +158,18 @@ const getLocalIP = () => {
   return "localhost";
 };
 
-connectDb()
-  .then(() => {
-    app.listen(port, "0.0.0.0", () => {
-      const localIP = getLocalIP();
-      console.log(`🚀 Server running successfully!`);
-      console.log(`➡ Local:   http://127.0.0.1:${port}`);
-      console.log(`➡ Network: http://${localIP}:${port}`);
-    });
-  })
-  .catch((err) => console.error("❌ MongoDB connection failed:", err));
+// connectDb()
+//   .then(() => {
+//     app.listen(port, "0.0.0.0", () => {
+//       const localIP = getLocalIP();
+//       console.log(`🚀 Server running successfully!`);
+//       console.log(`➡ Local:   http://127.0.0.1:${port}`);
+//       console.log(`➡ Network: http://${localIP}:${port}`);
+//     });
+//   })
+//   .catch((err) => console.error("❌ MongoDB connection failed:", err));
+connectDb().then(() => {
+  app.listen(port, () => {
+    console.log(`Server is running on Port: ${port}`);
+  });
+});
