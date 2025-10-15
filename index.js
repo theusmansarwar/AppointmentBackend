@@ -17,7 +17,7 @@ app.use(express.json());
 
 // Routers
 app.use("/patients", patientDataRouter);
-app.use("/api/auth", authRouter);
+app.use("/auth", authRouter);
 app.use("/record", recordRouter);
 app.use("/appointment", appointmentRouter);
 app.use("/report", dailyreportRouter);
