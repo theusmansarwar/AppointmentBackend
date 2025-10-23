@@ -1,11 +1,10 @@
-
 const express = require("express");
 const {
   getRecordVisits,
   createRecordVisit,
   deleteRecordVisit,
   updateRecordVisit,
-} = require("../Controller/recordvisitController");
+} = require("../controllers/recordvisitController");
 
 const router = express.Router();
 

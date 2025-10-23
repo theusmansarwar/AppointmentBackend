@@ -31,7 +31,7 @@ const {
   getRecords,     // ✅ list with pagination + search
   getRecordById,  // ✅ single record
   deleteRecord,
-} = require("../Controller/RecordController");
+} = require("../controllers/RecordController");
 
 const router = express.Router();
 

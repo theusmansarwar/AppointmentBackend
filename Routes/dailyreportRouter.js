@@ -9,7 +9,7 @@ const {
   deleteDailyReport,
   getAllDailyReports,
   getDailyReportById,
-} = require('../Controller/dailyreportController')
+} = require('../controllers/dailyreportController')
 
 // ➕ Create Daily Report
 router.post("/create", createDailyReport);

@@ -4,7 +4,7 @@ const { createPatientData
      , updatePatientData,
   deletePatientData,
    getAllPatients,
-  getPatientById} = require("../Controller/patientDataController");
+  getPatientById} = require("../controllers/patientDataController");
 
 // route to create patient record
 router.post("/create", createPatientData);

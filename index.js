@@ -10,7 +10,8 @@ const recordRouter = require("./Routes/recordRouter");
 const dailyreportRouter = require("./Routes/dailyreportRouter");
 const appointmentRouter = require("./Routes/appointmentRouter");
 const recordvisitRoutes = require("./Routes/recordvisitRoutes");
-
+const User= require ("./Routes/UserRoutes");
+const Roles= require ("./Routes/RoleRoutes")
 const app = express();
 
 app.use(cors());
@@ -22,8 +23,9 @@ app.use("/auth", authRouter);
 app.use("/record", recordRouter);
 app.use("/appointment", appointmentRouter);
 app.use("/report", dailyreportRouter);
- app.use("/records", recordvisitRoutes);
-
+app.use("/records", recordvisitRoutes);
+app.use("/roles", Roles);
+app.use("/user", User);
 // Bulk delete routes
 app.delete("/patients/delete", async (req, res) => {
   const { ids } = req.body;
