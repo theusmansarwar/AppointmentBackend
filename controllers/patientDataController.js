@@ -10,7 +10,6 @@ const createPatientData = async (req, res) => {
     age,
     gender,
     phone,
-    
     address,
     appointmentDate,
     appointmentTime,
