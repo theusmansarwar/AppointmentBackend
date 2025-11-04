@@ -150,8 +150,8 @@ const getDailyReportById = async (req, res) => {
     const filter = search
       ? {
           $or: [
-            { reportDate: { $regex: search, $options: "i" } }, // if you have a title
-            { prescriptionGiven: { $regex: search, $options: "i" } }, // if you store notes
+            // { reportDate: { $regex: search, $options: "i" } }, // if you have a title
+            { commonDiseases: { $regex: search, $options: "i" } }, // if you store notes
                    // if date is string
           ],
         }
