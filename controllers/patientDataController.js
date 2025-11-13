@@ -121,7 +121,7 @@ const deletePatientData = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: `${result.deletedCount} patients deleted`
+      message: ` Patient Record deleted Successfully`
     });
   } catch (error) {
     console.error("Error deleting patients:", error);

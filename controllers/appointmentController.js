@@ -126,7 +126,7 @@ const deleteAppointment = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: `${result.deletedCount} patients deleted`
+      message: `Appointments deleted successfully`
     });
   } catch (error) {
     console.error("Error deleting patients:", error);
